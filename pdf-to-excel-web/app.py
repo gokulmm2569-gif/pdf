@@ -10,11 +10,21 @@ from fastapi.templating import Jinja2Templates
 from extractor import process_pdf
 from excel_builder import create_excel_workbook
 
+import tempfile
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-UPLOADS_DIR = os.path.join(BASE_DIR, "uploads")
-OUTPUT_DIR = os.path.join(BASE_DIR, "output")
 TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
 STATIC_DIR = os.path.join(BASE_DIR, "static")
+
+# In serverless environments like Vercel, the local project tree is read-only.
+# We store uploaded files and output excel files in the writable /tmp directory.
+IS_SERVERLESS = bool(os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME"))
+if IS_SERVERLESS:
+    UPLOADS_DIR = os.path.join(tempfile.gettempdir(), "uploads")
+    OUTPUT_DIR = os.path.join(tempfile.gettempdir(), "output")
+else:
+    UPLOADS_DIR = os.path.join(BASE_DIR, "uploads")
+    OUTPUT_DIR = os.path.join(BASE_DIR, "output")
 
 os.makedirs(UPLOADS_DIR, exist_ok=True)
 os.makedirs(OUTPUT_DIR, exist_ok=True)
