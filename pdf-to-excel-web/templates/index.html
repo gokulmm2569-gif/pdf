@@ -5,124 +5,178 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PDF to Excel Converter | Invoice Data Extractor</title>
     <meta name="description" content="Dynamic PDF to Excel web converter. Extract invoice headers and line items from text or scanned PDFs into clean Excel worksheets.">
+    
+    <!-- Bootstrap 5.3.3 CSS & Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="/static/style.css">
 </head>
-<body>
-    <header class="app-header">
-        <div class="header-container">
-            <h1 class="app-title">PDF TO EXCEL</h1>
-            <div class="network-badge">
-                <span class="badge-label">Network Access:</span>
-                <a href="{{ lan_url }}" target="_blank" class="badge-link">{{ lan_url }}</a>
-                <span class="badge-separator">|</span>
-                <span class="badge-label">Local:</span>
-                <a href="{{ localhost_url }}" target="_blank" class="badge-link">{{ localhost_url }}</a>
+<body class="bg-light">
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm py-3">
+        <div class="container">
+            <a class="navbar-brand fw-bold d-flex align-items-center fs-4" href="/">
+                <i class="bi bi-file-earmark-excel-fill text-success me-2 fs-3"></i>
+                PDF TO EXCEL
+            </a>
+            <div class="d-flex align-items-center gap-2 flex-wrap">
+                <span class="badge bg-secondary-subtle text-dark border px-3 py-2">
+                    <i class="bi bi-wifi me-1 text-primary"></i>
+                    <strong>Network:</strong> <a href="{{ lan_url }}" target="_blank" class="text-decoration-none text-dark">{{ lan_url }}</a>
+                </span>
+                <span class="badge bg-secondary-subtle text-dark border px-3 py-2">
+                    <i class="bi bi-laptop me-1 text-secondary"></i>
+                    <strong>Local:</strong> <a href="{{ localhost_url }}" target="_blank" class="text-decoration-none text-dark">{{ localhost_url }}</a>
+                </span>
             </div>
         </div>
-    </header>
+    </nav>
 
-    <main class="main-content">
-        <!-- Upload Section -->
-        <section class="control-panel">
-            <h2 class="section-title">Upload your PDF</h2>
-            
-            <div class="upload-box" id="dropZone">
-                <input type="file" id="pdfFileInput" accept="application/pdf" class="file-input">
-                <label for="pdfFileInput" class="btn-file-select" id="chooseFileBtn">Choose PDF</label>
-                <div class="selected-file-info" id="selectedFileInfo">
-                    <span class="file-label">Selected file:</span>
-                    <span class="file-name" id="selectedFileName">No file chosen</span>
+    <main class="container my-5" style="max-width: 1080px;">
+        <!-- Control / Upload Card -->
+        <div class="card shadow-sm border-0 rounded-3 mb-4">
+            <div class="card-body p-4 p-md-5">
+                <div class="d-flex align-items-center mb-3">
+                    <i class="bi bi-cloud-arrow-up-fill text-primary fs-3 me-2"></i>
+                    <h2 class="card-title h4 mb-0 fw-bold">Upload Your PDF Invoice</h2>
                 </div>
-            </div>
-
-            <div class="action-row">
-                <button type="button" id="processBtn" class="btn-process" disabled>Process PDF</button>
-            </div>
-
-            <!-- Status Indicator -->
-            <div id="statusContainer" class="status-container hidden">
-                <div class="status-spinner" id="statusSpinner"></div>
-                <div class="status-text" id="statusText">Status: Ready</div>
-                <div class="status-subtext" id="statusSubtext"></div>
-            </div>
-
-            <!-- Download Action Area -->
-            <div id="downloadContainer" class="download-container hidden">
-                <div class="summary-line">
-                    <span class="success-icon">✓</span>
-                    <span class="success-message">PDF processed successfully</span>
-                    <span class="summary-badge" id="extractedRowsBadge">Extracted rows: 0</span>
-                    <span class="mode-badge" id="extractionModeBadge">Engine: PDF_TEXT</span>
-                </div>
-                <a id="downloadExcelBtn" href="#" class="btn-download" download>Download Excel (.xlsx)</a>
-            </div>
-
-            <!-- Error Banner -->
-            <div id="errorBanner" class="error-banner hidden">
-                <span class="error-icon">⚠</span>
-                <span id="errorMessage" class="error-message">Error message</span>
-            </div>
-        </section>
-
-        <!-- Preview Section -->
-        <section id="previewSection" class="preview-section hidden">
-            <h2 class="section-title">EXTRACTED DATA</h2>
-            
-            <div class="invoice-sheet" id="invoiceSheet">
-                <!-- Header Metadata -->
-                <div class="invoice-header-block" id="invoiceHeaderBlock">
-                    <div class="company-heading" id="companyHeading">IMRAN AIR EXPRESS</div>
-                    <div class="company-address" id="companyAddress"></div>
-                    <div class="company-contacts" id="companyContacts"></div>
-                    
-                    <div class="invoice-meta-grid" id="invoiceMetaGrid">
-                        <!-- Populated by JS -->
+                <p class="text-muted small mb-4">Upload a text-based or scanned PDF invoice to extract table line-items and invoice metadata into an Excel sheet.</p>
+                
+                <!-- Drag & Drop Zone -->
+                <div class="upload-box text-center p-4 p-md-5 rounded-3 mb-4" id="dropZone">
+                    <i class="bi bi-file-earmark-pdf text-danger display-3 mb-3 d-block"></i>
+                    <input type="file" id="pdfFileInput" accept="application/pdf" class="file-input d-none">
+                    <label for="pdfFileInput" class="btn btn-primary btn-lg px-4 py-2 shadow-sm fw-semibold mb-3" id="chooseFileBtn">
+                        <i class="bi bi-folder2-open me-2"></i>Choose PDF
+                    </label>
+                    <div class="text-muted small">or drag and drop your PDF file here</div>
+                    <div class="mt-3" id="selectedFileInfo">
+                        <span class="badge bg-light text-dark border px-3 py-2">
+                            <i class="bi bi-paperclip me-1"></i>
+                            <span id="selectedFileName">No file chosen</span>
+                        </span>
                     </div>
                 </div>
 
-                <!-- Table Preview -->
-                <div class="table-wrapper">
-                    <table class="invoice-table" id="extractedTable">
-                        <thead>
-                            <tr>
-                                <th class="col-sr">Sr No</th>
-                                <th class="col-doc">Doc No</th>
-                                <th class="col-date">Date</th>
-                                <th class="col-dest">Dest. City</th>
-                                <th class="col-mode">Mode</th>
-                                <th class="col-i">I</th>
-                                <th class="col-pc">PC</th>
-                                <th class="col-weight">Weight</th>
-                                <th class="col-amount">Amount</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tableBody">
-                            <!-- Populated by JS -->
-                        </tbody>
-                    </table>
+                <!-- Action Row -->
+                <div class="d-flex justify-content-center">
+                    <button type="button" id="processBtn" class="btn btn-dark btn-lg px-5 py-3 fw-bold shadow-sm" disabled>
+                        <i class="bi bi-gear-fill me-2"></i>Process PDF
+                    </button>
+                </div>
+
+                <!-- Status Indicator -->
+                <div id="statusContainer" class="alert alert-primary mt-4 d-flex align-items-center gap-3 hidden shadow-sm" role="alert">
+                    <div class="spinner-border text-primary" role="status" id="statusSpinner">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <div>
+                        <div class="fw-bold" id="statusText">Status: Ready</div>
+                        <div class="small text-muted" id="statusSubtext"></div>
+                    </div>
+                </div>
+
+                <!-- Download Success Area -->
+                <div id="downloadContainer" class="alert alert-success mt-4 p-4 rounded-3 hidden shadow-sm" role="alert">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi bi-check-circle-fill text-success fs-2"></i>
+                            <div>
+                                <h5 class="alert-heading mb-1 fw-bold">PDF Processed Successfully!</h5>
+                                <div class="d-flex gap-2 flex-wrap">
+                                    <span class="badge bg-success" id="extractedRowsBadge">Extracted rows: 0</span>
+                                    <span class="badge bg-info text-dark" id="extractionModeBadge">Engine: PDF_TEXT</span>
+                                </div>
+                            </div>
+                        </div>
+                        <a id="downloadExcelBtn" href="#" class="btn btn-success btn-lg px-4 py-2 fw-bold shadow-sm" download>
+                            <i class="bi bi-file-earmark-excel me-2"></i>Download Excel (.xlsx)
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Error Banner -->
+                <div id="errorBanner" class="alert alert-danger mt-4 d-flex align-items-center gap-2 hidden shadow-sm" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill fs-4 me-2"></i>
+                    <span id="errorMessage" class="fw-medium">Error message</span>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <!-- LAN & Network Instructions Box -->
-        <section class="network-info-box">
-            <h3 class="info-title">How to Access from Other Devices on Local Network</h3>
-            <ol class="info-list">
-                <li>Make sure this server is running on the host machine.</li>
-                <li>Connect other devices (phones, laptops) to the same Wi-Fi or local area network.</li>
-                <li>Open Google Chrome on the other device and visit: <code>{{ lan_url }}</code></li>
-                <li>If the page does not open, ensure Windows Firewall permits inbound connections on port <code>{{ port }}</code>:
-                    <br>
-                    <code class="code-snippet">netsh advfirewall firewall add rule name="PDF Web App" dir=in action=allow protocol=TCP localport=8000</code>
-                </li>
-            </ol>
-        </section>
+        <!-- Preview Section -->
+        <div id="previewSection" class="card shadow-sm border-0 rounded-3 mb-4 hidden">
+            <div class="card-header bg-white py-3 border-bottom d-flex align-items-center justify-content-between">
+                <h3 class="h5 mb-0 fw-bold d-flex align-items-center">
+                    <i class="bi bi-table text-primary me-2"></i>EXTRACTED DATA PREVIEW
+                </h3>
+                <span class="badge bg-primary-subtle text-primary border">Preview Mode</span>
+            </div>
+            <div class="card-body p-4">
+                <div class="invoice-sheet" id="invoiceSheet">
+                    <!-- Header Metadata -->
+                    <div class="p-3 bg-light rounded-3 mb-4 border" id="invoiceHeaderBlock">
+                        <h4 class="fw-bold text-primary mb-1" id="companyHeading">IMRAN AIR EXPRESS</h4>
+                        <div class="text-secondary small mb-2" id="companyAddress"></div>
+                        <div class="text-secondary small mb-3" id="companyContacts"></div>
+                        
+                        <div class="row g-2" id="invoiceMetaGrid">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Table Preview -->
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped table-bordered align-middle mb-0" id="extractedTable">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th class="col-sr">Sr No</th>
+                                    <th class="col-doc">Doc No</th>
+                                    <th class="col-date">Date</th>
+                                    <th class="col-dest">Dest. City</th>
+                                    <th class="col-mode">Mode</th>
+                                    <th class="col-i">I</th>
+                                    <th class="col-pc">PC</th>
+                                    <th class="col-weight">Weight</th>
+                                    <th class="col-amount">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Network Instructions Box -->
+        <div class="card shadow-sm border-0 rounded-3">
+            <div class="card-body p-4">
+                <h4 class="h6 fw-bold mb-3 d-flex align-items-center">
+                    <i class="bi bi-info-circle-fill text-primary me-2"></i>How to Access from Other Devices on Local Network
+                </h4>
+                <ol class="small text-muted mb-0 ps-3">
+                    <li class="mb-2">Make sure this server is running on the host machine.</li>
+                    <li class="mb-2">Connect other devices (smartphones, tablets, laptops) to the same Wi-Fi or LAN.</li>
+                    <li class="mb-2">Open browser on the other device and visit: <code class="text-dark bg-light px-2 py-1 border rounded">{{ lan_url }}</code></li>
+                    <li>If the page does not load, allow inbound port <code class="text-dark bg-light px-2 py-1 border rounded">{{ port }}</code> through firewall:
+                        <br>
+                        <code class="d-inline-block mt-1 p-2 bg-dark text-light rounded small">netsh advfirewall firewall add rule name="PDF Web App" dir=in action=allow protocol=TCP localport=8000</code>
+                    </li>
+                </ol>
+            </div>
+        </div>
     </main>
 
-    <footer class="app-footer">
-        <p>PDF to Excel Processing Engine &bull; Host: 0.0.0.0:8000 &bull; Bound for LAN & Local Access</p>
+    <!-- Footer -->
+    <footer class="text-center text-muted py-4 small">
+        <div class="container">
+            PDF to Excel Processing Engine &bull; Host: 0.0.0.0:8000 &bull; Bound for LAN, Cloud &amp; Local Access
+        </div>
     </footer>
 
+    <!-- Bootstrap 5.3.3 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/static/script.js"></script>
 </body>
 </html>
