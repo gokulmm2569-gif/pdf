@@ -1,133 +1,175 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF to Excel Converter | Invoice Data Extractor</title>
-    <meta name="description" content="Dynamic PDF to Excel web converter. Extract invoice headers and line items from text or scanned PDFs into clean Excel worksheets.">
+    <title>PDF to Excel Converter | Futuristic AI Invoice Extractor</title>
+    <meta name="description" content="Next-gen PDF to Excel converter. Extract structured invoice data from digital and scanned PDFs with deep OCR intelligence.">
     
+    <!-- Google Fonts: Space Grotesk & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
     <!-- Bootstrap 5.3.3 CSS & Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="/static/style.css">
 </head>
-<body class="bg-light">
-    <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm py-3">
+<body class="cyber-dark-body">
+    <!-- Ambient Background Glows -->
+    <div class="ambient-glow glow-top"></div>
+    <div class="ambient-glow glow-bottom"></div>
+
+    <!-- Futuristic Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark glass-nav sticky-top py-3">
         <div class="container">
-            <a class="navbar-brand fw-bold d-flex align-items-center fs-4" href="/">
-                <i class="bi bi-file-earmark-excel-fill text-success me-2 fs-3"></i>
-                PDF TO EXCEL
+            <a class="navbar-brand fw-bold d-flex align-items-center fs-4 tracking-tight" href="/">
+                <div class="brand-logo-glow me-2">
+                    <i class="bi bi-file-earmark-spreadsheet-fill text-gradient-cyan fs-3"></i>
+                </div>
+                <span class="brand-text">PDF<span class="text-cyan">2</span>EXCEL</span>
+                <span class="badge badge-ai ms-2">PRO</span>
             </a>
             <div class="d-flex align-items-center gap-2 flex-wrap">
-                <span class="badge bg-secondary-subtle text-dark border px-3 py-2">
-                    <i class="bi bi-wifi me-1 text-primary"></i>
-                    <strong>Network:</strong> <a href="{{ lan_url }}" target="_blank" class="text-decoration-none text-dark">{{ lan_url }}</a>
+                <span class="badge glass-badge">
+                    <span class="status-dot dot-cyan"></span>
+                    <strong class="text-secondary-cyan">Network:</strong>
+                    <a href="{{ lan_url }}" target="_blank" class="cyber-link">{{ lan_url }}</a>
                 </span>
-                <span class="badge bg-secondary-subtle text-dark border px-3 py-2">
-                    <i class="bi bi-laptop me-1 text-secondary"></i>
-                    <strong>Local:</strong> <a href="{{ localhost_url }}" target="_blank" class="text-decoration-none text-dark">{{ localhost_url }}</a>
+                <span class="badge glass-badge">
+                    <span class="status-dot dot-indigo"></span>
+                    <strong class="text-secondary-indigo">Local:</strong>
+                    <a href="{{ localhost_url }}" target="_blank" class="cyber-link">{{ localhost_url }}</a>
                 </span>
             </div>
         </div>
     </nav>
 
-    <main class="container my-5" style="max-width: 1080px;">
+    <main class="container my-5" style="max-width: 1100px;">
+        <!-- Hero Header -->
+        <div class="text-center mb-5 hero-header">
+            <span class="badge badge-neon-pill mb-3">
+                <i class="bi bi-stars me-1 text-cyan"></i> Neural OCR &amp; Vector Table Extractor
+            </span>
+            <h1 class="display-5 fw-extrabold hero-title mb-3">
+                Convert Invoice PDFs to <span class="gradient-text">Structured Excel</span>
+            </h1>
+            <p class="text-muted-light mx-auto" style="max-width: 620px;">
+                Intelligent table parsing for text invoices and scanned images. Extracts line-items, amounts, tracking codes, and metadata instantly.
+            </p>
+        </div>
+
         <!-- Control / Upload Card -->
-        <div class="card shadow-sm border-0 rounded-3 mb-4">
+        <div class="card glass-card border-glow mb-4">
             <div class="card-body p-4 p-md-5">
-                <div class="d-flex align-items-center mb-3">
-                    <i class="bi bi-cloud-arrow-up-fill text-primary fs-3 me-2"></i>
-                    <h2 class="card-title h4 mb-0 fw-bold">Upload Your PDF Invoice</h2>
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <div class="d-flex align-items-center">
+                        <div class="icon-bubble me-3">
+                            <i class="bi bi-cloud-arrow-up-fill text-cyan fs-4"></i>
+                        </div>
+                        <div>
+                            <h2 class="card-title h5 mb-0 fw-bold text-white">Upload Invoice Document</h2>
+                            <span class="text-muted-subtle small">Supported formats: Native Vector PDF, Scanned Image PDF</span>
+                        </div>
+                    </div>
+                    <span class="badge badge-engine">AUTO DETECT ENGINE</span>
                 </div>
-                <p class="text-muted small mb-4">Upload a text-based or scanned PDF invoice to extract table line-items and invoice metadata into an Excel sheet.</p>
                 
-                <!-- Drag & Drop Zone -->
-                <div class="upload-box text-center p-4 p-md-5 rounded-3 mb-4" id="dropZone">
-                    <i class="bi bi-file-earmark-pdf text-danger display-3 mb-3 d-block"></i>
+                <!-- Cyber Drop Zone -->
+                <div class="upload-box cyber-dropzone text-center p-5 rounded-4 mb-4" id="dropZone">
+                    <div class="dropzone-icon-wrap mb-3">
+                        <i class="bi bi-file-earmark-pdf-fill text-cyan dropzone-icon"></i>
+                        <div class="pulse-ring"></div>
+                    </div>
                     <input type="file" id="pdfFileInput" accept="application/pdf" class="file-input d-none">
-                    <label for="pdfFileInput" class="btn btn-primary btn-lg px-4 py-2 shadow-sm fw-semibold mb-3" id="chooseFileBtn">
-                        <i class="bi bi-folder2-open me-2"></i>Choose PDF
+                    <label for="pdfFileInput" class="btn btn-cyber-primary btn-lg px-4 py-2 mb-3" id="chooseFileBtn">
+                        <i class="bi bi-folder2-open me-2"></i>Select PDF File
                     </label>
-                    <div class="text-muted small">or drag and drop your PDF file here</div>
+                    <div class="drop-hint text-muted-subtle small">or drag and drop your document here to extract</div>
                     <div class="mt-3" id="selectedFileInfo">
-                        <span class="badge bg-light text-dark border px-3 py-2">
-                            <i class="bi bi-paperclip me-1"></i>
-                            <span id="selectedFileName">No file chosen</span>
+                        <span class="badge selected-file-badge">
+                            <i class="bi bi-file-text me-1 text-cyan"></i>
+                            <span id="selectedFileName">No file selected</span>
                         </span>
                     </div>
                 </div>
 
-                <!-- Action Row -->
+                <!-- Action Button -->
                 <div class="d-flex justify-content-center">
-                    <button type="button" id="processBtn" class="btn btn-dark btn-lg px-5 py-3 fw-bold shadow-sm" disabled>
-                        <i class="bi bi-gear-fill me-2"></i>Process PDF
+                    <button type="button" id="processBtn" class="btn btn-cyber-action btn-lg px-5 py-3 fw-bold" disabled>
+                        <i class="bi bi-lightning-charge-fill me-2"></i>Process &amp; Extract Data
                     </button>
                 </div>
 
                 <!-- Status Indicator -->
-                <div id="statusContainer" class="alert alert-primary mt-4 d-flex align-items-center gap-3 hidden shadow-sm" role="alert">
-                    <div class="spinner-border text-primary" role="status" id="statusSpinner">
-                        <span class="visually-hidden">Loading...</span>
+                <div id="statusContainer" class="alert alert-cyber-info mt-4 d-flex align-items-center gap-3 hidden" role="alert">
+                    <div class="cyber-spinner" id="statusSpinner">
+                        <div class="spinner-ring"></div>
                     </div>
                     <div>
-                        <div class="fw-bold" id="statusText">Status: Ready</div>
-                        <div class="small text-muted" id="statusSubtext"></div>
+                        <div class="fw-bold text-cyan" id="statusText">Status: Analyzing Document...</div>
+                        <div class="small text-muted-subtle" id="statusSubtext"></div>
                     </div>
                 </div>
 
                 <!-- Download Success Area -->
-                <div id="downloadContainer" class="alert alert-success mt-4 p-4 rounded-3 hidden shadow-sm" role="alert">
+                <div id="downloadContainer" class="alert alert-cyber-success mt-4 p-4 rounded-4 hidden" role="alert">
                     <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
-                        <div class="d-flex align-items-center gap-2">
-                            <i class="bi bi-check-circle-fill text-success fs-2"></i>
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="success-icon-glow">
+                                <i class="bi bi-check-circle-fill text-emerald fs-2"></i>
+                            </div>
                             <div>
-                                <h5 class="alert-heading mb-1 fw-bold">PDF Processed Successfully!</h5>
+                                <h5 class="alert-heading mb-1 fw-bold text-white">Extraction Complete!</h5>
                                 <div class="d-flex gap-2 flex-wrap">
-                                    <span class="badge bg-success" id="extractedRowsBadge">Extracted rows: 0</span>
-                                    <span class="badge bg-info text-dark" id="extractionModeBadge">Engine: PDF_TEXT</span>
+                                    <span class="badge badge-emerald-pill" id="extractedRowsBadge">Extracted rows: 0</span>
+                                    <span class="badge badge-cyan-pill" id="extractionModeBadge">Engine: PDF_TEXT</span>
                                 </div>
                             </div>
                         </div>
-                        <a id="downloadExcelBtn" href="#" class="btn btn-success btn-lg px-4 py-2 fw-bold shadow-sm" download>
-                            <i class="bi bi-file-earmark-excel me-2"></i>Download Excel (.xlsx)
+                        <a id="downloadExcelBtn" href="#" class="btn btn-cyber-download btn-lg px-4 py-2 fw-bold" download>
+                            <i class="bi bi-file-earmark-excel-fill me-2"></i>Download Spreadsheet (.xlsx)
                         </a>
                     </div>
                 </div>
 
                 <!-- Error Banner -->
-                <div id="errorBanner" class="alert alert-danger mt-4 d-flex align-items-center gap-2 hidden shadow-sm" role="alert">
-                    <i class="bi bi-exclamation-triangle-fill fs-4 me-2"></i>
+                <div id="errorBanner" class="alert alert-cyber-danger mt-4 d-flex align-items-center gap-3 hidden" role="alert">
+                    <i class="bi bi-exclamation-octagon-fill fs-4 text-danger"></i>
                     <span id="errorMessage" class="fw-medium">Error message</span>
                 </div>
             </div>
         </div>
 
         <!-- Preview Section -->
-        <div id="previewSection" class="card shadow-sm border-0 rounded-3 mb-4 hidden">
-            <div class="card-header bg-white py-3 border-bottom d-flex align-items-center justify-content-between">
-                <h3 class="h5 mb-0 fw-bold d-flex align-items-center">
-                    <i class="bi bi-table text-primary me-2"></i>EXTRACTED DATA PREVIEW
+        <div id="previewSection" class="card glass-card border-glow mb-4 hidden">
+            <div class="card-header glass-card-header py-3 border-bottom-cyber d-flex align-items-center justify-content-between">
+                <h3 class="h5 mb-0 fw-bold d-flex align-items-center text-white">
+                    <i class="bi bi-table text-cyan me-2"></i>EXTRACTED INVOICE DATA
                 </h3>
-                <span class="badge bg-primary-subtle text-primary border">Preview Mode</span>
+                <span class="badge badge-live-preview">LIVE PREVIEW</span>
             </div>
             <div class="card-body p-4">
                 <div class="invoice-sheet" id="invoiceSheet">
                     <!-- Header Metadata -->
-                    <div class="p-3 bg-light rounded-3 mb-4 border" id="invoiceHeaderBlock">
-                        <h4 class="fw-bold text-primary mb-1" id="companyHeading">IMRAN AIR EXPRESS</h4>
-                        <div class="text-secondary small mb-2" id="companyAddress"></div>
-                        <div class="text-secondary small mb-3" id="companyContacts"></div>
+                    <div class="glass-meta-panel p-4 rounded-3 mb-4" id="invoiceHeaderBlock">
+                        <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-2">
+                            <h4 class="fw-bold text-gradient-cyan mb-0" id="companyHeading">INVOICE PREVIEW</h4>
+                            <span class="badge badge-verified"><i class="bi bi-shield-check me-1"></i>VERIFIED INVOICE</span>
+                        </div>
+                        <div class="text-muted-light small mb-1" id="companyAddress"></div>
+                        <div class="text-muted-subtle small mb-3 font-mono" id="companyContacts"></div>
                         
-                        <div class="row g-2" id="invoiceMetaGrid">
-                            <!-- Populated by JS -->
+                        <div class="row g-2 mt-2" id="invoiceMetaGrid">
+                            <!-- Populated dynamically by JS -->
                         </div>
                     </div>
 
                     <!-- Table Preview -->
-                    <div class="table-responsive">
-                        <table class="table table-hover table-striped table-bordered align-middle mb-0" id="extractedTable">
-                            <thead class="table-dark">
+                    <div class="table-responsive cyber-table-wrap rounded-3">
+                        <table class="table table-cyber align-middle mb-0" id="extractedTable">
+                            <thead>
                                 <tr>
                                     <th class="col-sr">Sr No</th>
                                     <th class="col-doc">Doc No</th>
@@ -141,7 +183,7 @@
                                 </tr>
                             </thead>
                             <tbody id="tableBody">
-                                <!-- Populated by JS -->
+                                <!-- Populated dynamically by JS -->
                             </tbody>
                         </table>
                     </div>
@@ -149,29 +191,41 @@
             </div>
         </div>
 
-        <!-- Network Instructions Box -->
-        <div class="card shadow-sm border-0 rounded-3">
-            <div class="card-body p-4">
-                <h4 class="h6 fw-bold mb-3 d-flex align-items-center">
-                    <i class="bi bi-info-circle-fill text-primary me-2"></i>How to Access from Other Devices on Local Network
-                </h4>
-                <ol class="small text-muted mb-0 ps-3">
-                    <li class="mb-2">Make sure this server is running on the host machine.</li>
-                    <li class="mb-2">Connect other devices (smartphones, tablets, laptops) to the same Wi-Fi or LAN.</li>
-                    <li class="mb-2">Open browser on the other device and visit: <code class="text-dark bg-light px-2 py-1 border rounded">{{ lan_url }}</code></li>
-                    <li>If the page does not load, allow inbound port <code class="text-dark bg-light px-2 py-1 border rounded">{{ port }}</code> through firewall:
-                        <br>
-                        <code class="d-inline-block mt-1 p-2 bg-dark text-light rounded small">netsh advfirewall firewall add rule name="PDF Web App" dir=in action=allow protocol=TCP localport=8000</code>
-                    </li>
-                </ol>
+        <!-- Info / Features Card -->
+        <div class="row g-3">
+            <div class="col-md-4">
+                <div class="card glass-card h-100 p-4 feature-card">
+                    <div class="feature-icon text-cyan mb-3"><i class="bi bi-lightning-charge fs-3"></i></div>
+                    <h5 class="fw-bold text-white h6">Instant Vector Parsing</h5>
+                    <p class="small text-muted-subtle mb-0">High-speed character extraction for native accounting and ERP digital PDFs.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card glass-card h-100 p-4 feature-card">
+                    <div class="feature-icon text-indigo mb-3"><i class="bi bi-eye fs-3"></i></div>
+                    <h5 class="fw-bold text-white h6">Neural OCR Vision</h5>
+                    <p class="small text-muted-subtle mb-0">300 DPI high-res page rendering with spatial line-item token clustering.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card glass-card h-100 p-4 feature-card">
+                    <div class="feature-icon text-emerald mb-3"><i class="bi bi-file-earmark-spreadsheet fs-3"></i></div>
+                    <h5 class="fw-bold text-white h6">Excel Auto-Formulas</h5>
+                    <p class="small text-muted-subtle mb-0">Generates styled .xlsx workbooks with automated SUM totals and formatting.</p>
+                </div>
             </div>
         </div>
     </main>
 
     <!-- Footer -->
-    <footer class="text-center text-muted py-4 small">
+    <footer class="text-center py-5 text-muted-subtle small border-top-cyber mt-5">
         <div class="container">
-            PDF to Excel Processing Engine &bull; Host: 0.0.0.0:8000 &bull; Bound for LAN, Cloud &amp; Local Access
+            <div class="d-flex justify-content-center align-items-center gap-2 mb-2">
+                <span class="brand-text text-white fw-bold">PDF<span class="text-cyan">2</span>EXCEL</span>
+                <span class="text-muted">&bull;</span>
+                <span>Production Server Active</span>
+            </div>
+            <div>Built for High-Precision Document Automation &bull; Cloud &amp; Local Network Ready</div>
         </div>
     </footer>
 
