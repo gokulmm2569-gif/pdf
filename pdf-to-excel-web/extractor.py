@@ -1,5 +1,8 @@
 import re
 import os
+import sys
+import platform
+import shutil
 import asyncio
 from typing import Dict, Any, List, Optional
 import pdfplumber
@@ -17,6 +20,31 @@ try:
     HAS_PYTESSERACT = True
 except ImportError:
     HAS_PYTESSERACT = False
+
+
+class OCRBoundingRect:
+    def __init__(self, x: int = 0, y: int = 0, width: int = 0, height: int = 0):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+
+
+class OCRWord:
+    def __init__(self, text: str = "", x: int = 0, y: int = 0, width: int = 0, height: int = 0):
+        self.text = text
+        self.bounding_rect = OCRBoundingRect(x, y, width, height)
+
+
+class OCRLine:
+    def __init__(self, words: Optional[List[OCRWord]] = None):
+        self.words = words or []
+
+
+class OCRResult:
+    def __init__(self, text: str = "", lines: Optional[List[OCRLine]] = None):
+        self.text = text
+        self.lines = lines or []
 
 
 TARGET_COLUMNS = [
@@ -383,13 +411,122 @@ def run_winocr_recognize(pil_image, lang: str = "en"):
         return asyncio.run(winocr.recognize_pil(pil_image, lang))
 
 
+def check_tesseract_available() -> bool:
+    """
+    Checks if Tesseract OCR binary and pytesseract are available.
+    Configures tesseract_cmd and TESSDATA_PREFIX if found in non-standard paths.
+    """
+    if not HAS_PYTESSERACT:
+        return False
+        
+    # 1. If already in PATH
+    if shutil.which("tesseract"):
+        return True
+        
+    # 2. Check common Linux and Render paths
+    common_linux_paths = [
+        "/usr/bin/tesseract",
+        "/usr/local/bin/tesseract",
+        os.path.expanduser("~/.local/bin/tesseract"),
+        os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".apt", "usr", "bin", "tesseract")),
+        os.path.abspath(os.path.join(os.path.dirname(__file__), ".apt", "usr", "bin", "tesseract")),
+    ]
+    for p in common_linux_paths:
+        if os.path.exists(p) and os.path.isfile(p):
+            pytesseract.pytesseract.tesseract_cmd = p
+            tessdata_candidates = [
+                os.path.join(os.path.dirname(os.path.dirname(p)), "share", "tessdata"),
+                os.path.join(os.path.dirname(os.path.dirname(p)), "share", "tesseract-ocr", "4.00", "tessdata"),
+                os.path.join(os.path.dirname(os.path.dirname(p)), "share", "tesseract-ocr", "5", "tessdata"),
+                "/usr/share/tesseract-ocr/4.00/tessdata",
+                "/usr/share/tesseract-ocr/5/tessdata",
+                "/usr/share/tessdata",
+            ]
+            for td in tessdata_candidates:
+                if os.path.exists(td):
+                    os.environ.setdefault("TESSDATA_PREFIX", td)
+                    break
+            return True
+
+    # 3. Check common Windows paths
+    if platform.system() == "Windows":
+        common_win_paths = [
+            r"C:\Program Files\Tesseract-OCR\tesseract.exe",
+            r"C:\Program Files (x86)\Tesseract-OCR\tesseract.exe",
+            os.path.expandvars(r"%LOCALAPPDATA%\Programs\Tesseract-OCR\tesseract.exe"),
+        ]
+        for p in common_win_paths:
+            if os.path.exists(p) and os.path.isfile(p):
+                pytesseract.pytesseract.tesseract_cmd = p
+                return True
+
+    return False
+
+
+def get_ocr_backend() -> str:
+    """
+    Selects the optimal OCR backend based on operating system and availability:
+    - Windows: Uses winocr if installed; falls back to tesseract if available.
+    - Linux / Render: Uses tesseract if available; never requires winocr.
+    """
+    is_windows = platform.system() == "Windows"
+    if is_windows and HAS_WINOCR:
+        return "winocr"
+    if check_tesseract_available():
+        return "tesseract"
+    if HAS_WINOCR:
+        return "winocr"
+    return "none"
+
+
+def run_tesseract_recognize(pil_image: Image.Image, lang: str = "eng") -> OCRResult:
+    """
+    Executes Tesseract OCR via pytesseract and formats output into line/word tokens
+    matching the winocr structure for table grouping and column parsing.
+    """
+    data = pytesseract.image_to_data(pil_image, lang=lang, output_type=pytesseract.Output.DICT)
+    full_text = pytesseract.image_to_string(pil_image, lang=lang)
+    
+    lines_map: Dict[Any, List[OCRWord]] = {}
+    n_boxes = len(data["text"])
+    for i in range(n_boxes):
+        text = clean_str(data["text"][i])
+        if not text:
+            continue
+        try:
+            conf = float(data["conf"][i])
+            if conf < 15:
+                continue
+        except (ValueError, TypeError):
+            pass
+            
+        x = int(data["left"][i])
+        y = int(data["top"][i])
+        w = int(data["width"][i])
+        h = int(data["height"][i])
+        
+        line_key = (data.get("block_num", [0])[i], data.get("par_num", [0])[i], data.get("line_num", [0])[i])
+        if line_key not in lines_map:
+            lines_map[line_key] = []
+        lines_map[line_key].append(OCRWord(text, x, y, w, h))
+        
+    ocr_lines = [OCRLine(words) for words in lines_map.values()]
+    return OCRResult(full_text, ocr_lines)
+
+
 def extract_from_ocr(pdf_path: str) -> Dict[str, Any]:
     """
-    Extracts table and header from scanned/image-based PDF using Windows Media OCR.
+    Extracts table and header from scanned/image-based PDF using cross-platform OCR:
+    - Windows: Windows Media OCR (winocr) or Tesseract OCR
+    - Linux / Render: Tesseract OCR (pytesseract)
     """
-    if not HAS_WINOCR:
-        raise RuntimeError("Windows Media OCR (winocr) is not available on this system.")
-        
+    backend = get_ocr_backend()
+    if backend == "none":
+        if platform.system() == "Windows":
+            raise RuntimeError("No OCR backend is available. Please ensure winocr or Tesseract OCR is installed.")
+        else:
+            raise RuntimeError("Tesseract OCR is not installed on this server. Please install tesseract-ocr system package and pytesseract.")
+            
     doc = pdfium.PdfDocument(pdf_path)
     all_rows = []
     full_text_pages = []
@@ -399,8 +536,14 @@ def extract_from_ocr(pdf_path: str) -> Dict[str, Any]:
         # Render high-resolution image (scale=3.0 -> 300 DPI)
         pil_image = page.render(scale=3.0).to_pil()
         
-        # Run OCR
-        ocr_result = run_winocr_recognize(pil_image, 'en')
+        # Run OCR with selected backend
+        if backend == "winocr":
+            ocr_result = run_winocr_recognize(pil_image, 'en')
+        elif backend == "tesseract":
+            ocr_result = run_tesseract_recognize(pil_image, 'eng')
+        else:
+            raise RuntimeError(f"Unsupported OCR backend: {backend}")
+            
         page_text = ocr_result.text or ""
         full_text_pages.append(page_text)
         

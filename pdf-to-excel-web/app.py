@@ -16,8 +16,8 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
 STATIC_DIR = os.path.join(BASE_DIR, "static")
 
-# In serverless environments like Vercel, the local project tree is read-only.
-# We store uploaded files and output excel files in the writable /tmp directory.
+# In serverless/cloud environments, the local project tree may be read-only or ephemeral.
+# We store uploaded files and output excel files in writable directories.
 IS_SERVERLESS = bool(os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME"))
 if IS_SERVERLESS:
     UPLOADS_DIR = os.path.join(tempfile.gettempdir(), "uploads")
@@ -25,6 +25,12 @@ if IS_SERVERLESS:
 else:
     UPLOADS_DIR = os.path.join(BASE_DIR, "uploads")
     OUTPUT_DIR = os.path.join(BASE_DIR, "output")
+    try:
+        os.makedirs(UPLOADS_DIR, exist_ok=True)
+        os.makedirs(OUTPUT_DIR, exist_ok=True)
+    except OSError:
+        UPLOADS_DIR = os.path.join(tempfile.gettempdir(), "uploads")
+        OUTPUT_DIR = os.path.join(tempfile.gettempdir(), "output")
 
 os.makedirs(UPLOADS_DIR, exist_ok=True)
 os.makedirs(OUTPUT_DIR, exist_ok=True)
@@ -115,6 +121,13 @@ async def process_pdf_endpoint(file: UploadFile = File(...)):
         raise HTTPException(status_code=400, detail=str(ve))
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to process PDF: {str(e)}")
+    finally:
+        # Clean up temporary uploaded PDF to prevent disk space accumulation
+        if os.path.exists(saved_pdf_path):
+            try:
+                os.remove(saved_pdf_path)
+            except Exception:
+                pass
         
     rows = extraction_result.get("rows", [])
     if not rows:
