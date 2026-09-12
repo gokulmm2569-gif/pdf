@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF to Excel Converter | Invoice Data Extractor</title>
+    <meta name="description" content="Dynamic PDF to Excel web converter. Extract invoice headers and line items from text or scanned PDFs into clean Excel worksheets.">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <header class="app-header">
+        <div class="header-container">
+            <h1 class="app-title">PDF TO EXCEL</h1>
+            <div class="network-badge">
+                <span class="badge-label">Status:</span>
+                <span class="badge-link" id="networkStatusBadge">Online</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <!-- Upload Section -->
+        <section class="control-panel">
+            <h2 class="section-title">Upload your PDF</h2>
+            
+            <div class="upload-box" id="dropZone">
+                <input type="file" id="pdfFileInput" accept="application/pdf" class="file-input">
+                <label for="pdfFileInput" class="btn-file-select" id="chooseFileBtn">Choose PDF</label>
+                <div class="selected-file-info" id="selectedFileInfo">
+                    <span class="file-label">Selected file:</span>
+                    <span class="file-name" id="selectedFileName">No file chosen</span>
+                </div>
+            </div>
+
+            <div class="action-row">
+                <button type="button" id="processBtn" class="btn-process" disabled>Process PDF</button>
+            </div>
+
+            <!-- Status Indicator -->
+            <div id="statusContainer" class="status-container hidden">
+                <div class="status-spinner" id="statusSpinner"></div>
+                <div class="status-text" id="statusText">Status: Ready</div>
+                <div class="status-subtext" id="statusSubtext"></div>
+            </div>
+
+            <!-- Download Action Area -->
+            <div id="downloadContainer" class="download-container hidden">
+                <div class="summary-line">
+                    <span class="success-icon">✓</span>
+                    <span class="success-message">PDF processed successfully</span>
+                    <span class="summary-badge" id="extractedRowsBadge">Extracted rows: 0</span>
+                    <span class="mode-badge" id="extractionModeBadge">Engine: PDF_TEXT</span>
+                </div>
+                <a id="downloadExcelBtn" href="#" class="btn-download" download>Download Excel (.xlsx)</a>
+            </div>
+
+            <!-- Error Banner -->
+            <div id="errorBanner" class="error-banner hidden">
+                <span class="error-icon">⚠</span>
+                <span id="errorMessage" class="error-message">Error message</span>
+            </div>
+        </section>
+
+        <!-- Preview Section -->
+        <section id="previewSection" class="preview-section hidden">
+            <h2 class="section-title">EXTRACTED DATA</h2>
+            
+            <div class="invoice-sheet" id="invoiceSheet">
+                <!-- Header Metadata -->
+                <div class="invoice-header-block" id="invoiceHeaderBlock">
+                    <div class="company-heading" id="companyHeading">INVOICE PREVIEW</div>
+                    <div class="company-address" id="companyAddress"></div>
+                    <div class="company-contacts" id="companyContacts"></div>
+                    
+                    <div class="invoice-meta-grid" id="invoiceMetaGrid">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Table Preview -->
+                <div class="table-wrapper">
+                    <table class="invoice-table" id="extractedTable">
+                        <thead>
+                            <tr>
+                                <th class="col-sr">Sr No</th>
+                                <th class="col-doc">Doc No</th>
+                                <th class="col-date">Date</th>
+                                <th class="col-dest">Dest. City</th>
+                                <th class="col-mode">Mode</th>
+                                <th class="col-i">I</th>
+                                <th class="col-pc">PC</th>
+                                <th class="col-weight">Weight</th>
+                                <th class="col-amount">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Information Box -->
+        <section class="network-info-box">
+            <h3 class="info-title">How It Works</h3>
+            <ol class="info-list">
+                <li>Upload any PDF invoice containing tabular freight, billing, or shipping records.</li>
+                <li>Click <strong>Process PDF</strong> to extract headers, destination cities, weights, and amounts.</li>
+                <li>Review the extracted live data preview in the table above.</li>
+                <li>Click <strong>Download Excel (.xlsx)</strong> to get your formatted spreadsheet.</li>
+            </ol>
+        </section>
+    </main>
+
+    <footer class="app-footer">
+        <p>PDF to Excel Processing Engine &bull; Automated Table &amp; Metadata Extraction</p>
+    </footer>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>

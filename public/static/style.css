@@ -1,0 +1,491 @@
+/* CSS for PDF to Excel Web Application */
+:root {
+    --bg-page: #f8fafc;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --border-color: #333333;
+    --border-light: #cbd5e1;
+    --table-header-bg: #f1f5f9;
+    --primary-blue: #1e3a8a;
+    --primary-hover: #172554;
+    --success-green: #15803d;
+    --danger-red: #b91c1c;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-page);
+    color: var(--text-primary);
+    line-height: 1.5;
+    padding-bottom: 40px;
+}
+
+/* Header */
+.app-header {
+    background-color: #ffffff;
+    border-bottom: 1px solid var(--border-light);
+    padding: 16px 24px;
+}
+
+.header-container {
+    max-width: 1050px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.app-title {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: var(--text-primary);
+}
+
+.network-badge {
+    background-color: #f1f5f9;
+    padding: 6px 14px;
+    border-radius: 4px;
+    font-size: 13px;
+    border: 1px solid #e2e8f0;
+}
+
+.badge-label {
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.badge-link {
+    color: var(--primary-blue);
+    font-family: monospace;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.badge-link:hover {
+    text-decoration: underline;
+}
+
+.badge-separator {
+    margin: 0 8px;
+    color: #cbd5e1;
+}
+
+/* Main Content */
+.main-content {
+    max-width: 1050px;
+    margin: 24px auto;
+    padding: 0 16px;
+}
+
+.control-panel {
+    background: #ffffff;
+    border: 1px solid var(--border-light);
+    border-radius: 4px;
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.section-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* File Upload */
+.upload-box {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background-color: #f8fafc;
+    border: 1px dashed #94a3b8;
+    padding: 16px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+}
+
+.file-input {
+    display: none;
+}
+
+.btn-file-select {
+    display: inline-block;
+    background-color: #334155;
+    color: #ffffff;
+    padding: 8px 18px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.btn-file-select:hover {
+    background-color: #1e293b;
+}
+
+.selected-file-info {
+    font-size: 14px;
+}
+
+.file-label {
+    color: var(--text-secondary);
+    margin-right: 6px;
+}
+
+.file-name {
+    font-weight: 600;
+    font-family: monospace;
+    color: var(--text-primary);
+}
+
+.action-row {
+    margin-bottom: 16px;
+}
+
+.btn-process {
+    background-color: var(--primary-blue);
+    color: #ffffff;
+    border: none;
+    padding: 10px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.btn-process:hover:not(:disabled) {
+    background-color: var(--primary-hover);
+}
+
+.btn-process:disabled {
+    background-color: #94a3b8;
+    cursor: not-allowed;
+}
+
+/* Status */
+.status-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background-color: #f0fdf4;
+    border-left: 4px solid var(--success-green);
+    margin-top: 12px;
+}
+
+.status-spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid #cbd5e1;
+    border-top: 2px solid var(--primary-blue);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.status-text {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.status-subtext {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+/* Download Container */
+.download-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 16px;
+    background-color: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 4px;
+    margin-top: 16px;
+}
+
+.summary-line {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.success-icon {
+    color: var(--success-green);
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.success-message {
+    font-weight: 600;
+    font-size: 14px;
+    color: #166534;
+}
+
+.summary-badge, .mode-badge {
+    background-color: #ffffff;
+    border: 1px solid #86efac;
+    padding: 3px 10px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #166534;
+}
+
+.mode-badge {
+    background-color: #eff6ff;
+    border-color: #bfdbfe;
+    color: #1d4ed8;
+}
+
+.btn-download {
+    display: inline-block;
+    background-color: var(--success-green);
+    color: #ffffff;
+    text-decoration: none;
+    padding: 10px 22px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 4px;
+    transition: background 0.2s ease;
+}
+
+.btn-download:hover {
+    background-color: #166534;
+}
+
+/* Error Banner */
+.error-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    background-color: #fef2f2;
+    border: 1px solid #fecaca;
+    border-left: 4px solid var(--danger-red);
+    color: var(--danger-red);
+    font-size: 14px;
+    margin-top: 14px;
+    border-radius: 4px;
+}
+
+.error-icon {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* A4 Sheet Invoice Style Preview */
+.preview-section {
+    margin-top: 24px;
+}
+
+.invoice-sheet {
+    background: #ffffff;
+    border: 1px solid var(--border-light);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    padding: 32px;
+    border-radius: 2px;
+}
+
+.invoice-header-block {
+    border-bottom: 2px solid #0f172a;
+    padding-bottom: 16px;
+    margin-bottom: 20px;
+}
+
+.company-heading {
+    font-size: 20px;
+    font-weight: 800;
+    text-align: center;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+}
+
+.company-address, .company-contacts {
+    font-size: 11px;
+    text-align: center;
+    color: #334155;
+    margin-bottom: 3px;
+}
+
+.invoice-meta-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px 16px;
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid #e2e8f0;
+    font-size: 12px;
+}
+
+.meta-item {
+    display: flex;
+    gap: 6px;
+}
+
+.meta-label {
+    font-weight: 700;
+    color: #475569;
+}
+
+.meta-val {
+    font-weight: 500;
+    color: #0f172a;
+}
+
+/* Invoice Table */
+.table-wrapper {
+    overflow-x: auto;
+    margin-top: 16px;
+}
+
+.invoice-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    background-color: #ffffff;
+    color: #000000;
+}
+
+.invoice-table th, 
+.invoice-table td {
+    border: 1px solid var(--border-color);
+    padding: 5px 8px;
+    vertical-align: middle;
+}
+
+.invoice-table th {
+    background-color: var(--table-header-bg);
+    font-weight: 700;
+    color: #000000;
+    text-align: center;
+    font-size: 11.5px;
+    white-space: nowrap;
+}
+
+/* Column Alignments */
+.invoice-table th.col-sr,
+.invoice-table td.col-sr {
+    text-align: center;
+    width: 50px;
+}
+
+.invoice-table th.col-doc,
+.invoice-table td.col-doc {
+    text-align: left;
+    font-family: monospace;
+    font-size: 12px;
+}
+
+.invoice-table th.col-date,
+.invoice-table td.col-date {
+    text-align: center;
+    white-space: nowrap;
+}
+
+.invoice-table th.col-dest,
+.invoice-table td.col-dest {
+    text-align: left;
+}
+
+.invoice-table th.col-mode,
+.invoice-table td.col-mode {
+    text-align: center;
+}
+
+.invoice-table th.col-i,
+.invoice-table td.col-i {
+    text-align: center;
+    width: 35px;
+}
+
+.invoice-table th.col-pc,
+.invoice-table td.col-pc {
+    text-align: center;
+    width: 45px;
+}
+
+.invoice-table th.col-weight,
+.invoice-table td.col-weight {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.invoice-table th.col-amount,
+.invoice-table td.col-amount {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+}
+
+/* Network Info Box */
+.network-info-box {
+    background: #ffffff;
+    border: 1px solid var(--border-light);
+    border-radius: 4px;
+    padding: 20px;
+    margin-top: 24px;
+    font-size: 13px;
+}
+
+.info-title {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.info-list {
+    margin-left: 20px;
+    line-height: 1.8;
+}
+
+.info-list code {
+    background-color: #f1f5f9;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: monospace;
+    font-weight: 600;
+}
+
+.code-snippet {
+    display: inline-block;
+    margin-top: 4px;
+    padding: 4px 8px;
+    background-color: #1e293b;
+    color: #f8fafc;
+    border-radius: 4px;
+}
+
+/* Footer */
+.app-footer {
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 32px;
+}
+
+/* Helper */
+.hidden {
+    display: none !important;
+}
