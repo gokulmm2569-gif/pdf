@@ -163,7 +163,7 @@ async def download_excel(filename: str):
 
 if __name__ == "__main__":
     ip = get_local_ip()
-    port = 8000
+    port = int(os.environ.get("PORT", 8000))
     print("\n=======================================================")
     print("           PDF TO EXCEL WEB APPLICATION                ")
     print("=======================================================")
