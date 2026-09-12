@@ -10,15 +10,17 @@ import pypdfium2 as pdfium
 from PIL import Image
 
 try:
-    import winocr
+    import winocr  # type: ignore
     HAS_WINOCR = True
 except ImportError:
+    winocr = None  # type: ignore
     HAS_WINOCR = False
 
 try:
-    import pytesseract
+    import pytesseract  # type: ignore
     HAS_PYTESSERACT = True
 except ImportError:
+    pytesseract = None  # type: ignore
     HAS_PYTESSERACT = False
 
 
@@ -398,6 +400,8 @@ def run_winocr_recognize(pil_image, lang: str = "en"):
     """
     Executes winocr.recognize_pil safely whether an asyncio loop is active or not.
     """
+    if not HAS_WINOCR or winocr is None:
+        raise RuntimeError("Windows Media OCR (winocr) is not available.")
     try:
         loop = asyncio.get_running_loop()
     except RuntimeError:
@@ -416,7 +420,7 @@ def check_tesseract_available() -> bool:
     Checks if Tesseract OCR binary and pytesseract are available.
     Configures tesseract_cmd and TESSDATA_PREFIX if found in non-standard paths.
     """
-    if not HAS_PYTESSERACT:
+    if not HAS_PYTESSERACT or pytesseract is None:
         return False
         
     # 1. If already in PATH
@@ -484,6 +488,8 @@ def run_tesseract_recognize(pil_image: Image.Image, lang: str = "eng") -> OCRRes
     Executes Tesseract OCR via pytesseract and formats output into line/word tokens
     matching the winocr structure for table grouping and column parsing.
     """
+    if not HAS_PYTESSERACT or pytesseract is None:
+        raise RuntimeError("Tesseract OCR (pytesseract) is not available.")
     data = pytesseract.image_to_data(pil_image, lang=lang, output_type=pytesseract.Output.DICT)
     full_text = pytesseract.image_to_string(pil_image, lang=lang)
     
