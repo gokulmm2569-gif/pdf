@@ -53,8 +53,20 @@ def get_local_ip() -> str:
             return "127.0.0.1"
 
 
+@app.middleware("http")
+async def handle_vercel_rewrite(request: Request, call_next):
+    # When Vercel internally rewrites requests to /api/index.py,
+    # restore the original requested path from x-matched-path or x-invoke-path headers
+    matched_path = request.headers.get("x-matched-path") or request.headers.get("x-invoke-path")
+    if matched_path and request.scope.get("path") in ["/api/index.py", "/api/index"]:
+        request.scope["path"] = matched_path
+    return await call_next(request)
+
+
 @app.get("/", response_class=HTMLResponse)
 @app.get("/index.html", response_class=HTMLResponse)
+@app.get("/api/index.py", response_class=HTMLResponse)
+@app.get("/api/index", response_class=HTMLResponse)
 async def index(request: Request):
     local_ip = get_local_ip()
     port = 8000
