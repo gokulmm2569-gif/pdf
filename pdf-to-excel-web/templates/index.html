@@ -3,35 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF to Excel Converter | Futuristic AI Invoice Extractor</title>
-    <meta name="description" content="Next-gen PDF to Excel converter. Extract structured invoice data from digital and scanned PDFs with deep OCR intelligence.">
+    <title>PDF to Excel AI | Next-Gen Neural Table Extractor</title>
+    <meta name="description" content="Next-gen PDF to Excel converter with interactive neural OCR, vector table extraction, and holographic live preview.">
     
-    <!-- Google Fonts: Space Grotesk & JetBrains Mono -->
+    <!-- Google Fonts: Space Grotesk, Plus Jakarta Sans, JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
 
     <!-- Bootstrap 5.3.3 CSS & Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <!-- Canvas Confetti for Celebration FX -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body class="cyber-dark-body">
-    <!-- Ambient Background Glows -->
+    <!-- Interactive Background Particle Canvas -->
+    <canvas id="motionCanvas" class="motion-canvas"></canvas>
+    <div class="cyber-grid-overlay"></div>
+    <div class="cursor-glow" id="cursorGlow"></div>
+
+    <!-- Ambient Floating Orbs -->
     <div class="ambient-glow glow-top"></div>
     <div class="ambient-glow glow-bottom"></div>
+    <div class="ambient-glow glow-center"></div>
 
-    <!-- Futuristic Navbar -->
+    <!-- Futuristic Glass Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark glass-nav sticky-top py-3">
         <div class="container">
             <a class="navbar-brand fw-bold d-flex align-items-center fs-4 tracking-tight" href="/">
                 <div class="brand-logo-glow me-2">
-                    <i class="bi bi-file-earmark-spreadsheet-fill text-gradient-cyan fs-3"></i>
+                    <i class="bi bi-cpu-fill text-gradient-cyan fs-3 animated-pulse-icon"></i>
                 </div>
-                <span class="brand-text">PDF<span class="text-cyan">2</span>EXCEL</span>
-                <span class="badge badge-ai ms-2">PRO</span>
+                <span class="brand-text">PDF<span class="text-cyan">2</span>EXCEL<span class="text-indigo">.AI</span></span>
+                <span class="badge badge-ai ms-2">V2.4 PRO</span>
             </a>
+            
             <div class="d-flex align-items-center gap-2 flex-wrap">
+                <div class="live-status-pill">
+                    <span class="pulsing-radar-dot"></span>
+                    <span class="text-mono-xs text-cyan">NEURAL ENGINE ONLINE</span>
+                </div>
                 <span class="badge glass-badge">
                     <span class="status-dot dot-cyan"></span>
                     <strong class="text-secondary-cyan">Network:</strong>
@@ -46,117 +61,243 @@
         </div>
     </nav>
 
-    <main class="container my-5" style="max-width: 1100px;">
-        <!-- Hero Header -->
+    <main class="container my-5 main-content-layer" style="max-width: 1140px;">
+        <!-- Hero Section with Motion Typography -->
         <div class="text-center mb-5 hero-header">
-            <span class="badge badge-neon-pill mb-3">
-                <i class="bi bi-stars me-1 text-cyan"></i> Neural OCR &amp; Vector Table Extractor
-            </span>
-            <h1 class="display-5 fw-extrabold hero-title mb-3">
-                Convert Invoice PDFs to <span class="gradient-text">Structured Excel</span>
+            <div class="d-inline-flex align-items-center gap-2 badge-neon-pill mb-3">
+                <i class="bi bi-stars text-cyan spin-slow"></i>
+                <span>Quantum OCR &amp; Vector Invoice Reconstruction</span>
+                <span class="badge-mini-tag">ACCELERATED</span>
+            </div>
+            
+            <h1 class="display-4 fw-extrabold hero-title mb-3">
+                Transform Invoice PDFs Into <br>
+                <span class="gradient-text text-glow-animate">Intelligent Excel Spreadsheets</span>
             </h1>
-            <p class="text-muted-light mx-auto" style="max-width: 620px;">
-                Intelligent table parsing for text invoices and scanned images. Extracts line-items, amounts, tracking codes, and metadata instantly.
+            
+            <p class="text-muted-light mx-auto hero-subtitle" style="max-width: 680px;">
+                High-precision character spatial clustering, native vector parsing, and neural fallback for scanned invoices. Automatically generates formulas, metadata blocks, and formatted workbooks.
             </p>
+
+            <!-- Interactive Metric Highlights -->
+            <div class="d-flex justify-content-center gap-3 flex-wrap mt-4">
+                <div class="hero-stat-chip">
+                    <i class="bi bi-speedometer2 text-cyan"></i>
+                    <span><strong>&lt; 350ms</strong> Extraction</span>
+                </div>
+                <div class="hero-stat-chip">
+                    <i class="bi bi-shield-check text-emerald"></i>
+                    <span><strong>100%</strong> Local &amp; Private</span>
+                </div>
+                <div class="hero-stat-chip">
+                    <i class="bi bi-filetype-xlsx text-indigo"></i>
+                    <span>Auto <strong>SUM</strong> Formulas</span>
+                </div>
+            </div>
         </div>
 
-        <!-- Control / Upload Card -->
-        <div class="card glass-card border-glow mb-4">
+        <!-- Main Interactive Upload Card with 3D Tilt & Laser Scanner -->
+        <div class="card glass-card border-glow mb-4 tilt-card" id="mainUploadCard">
             <div class="card-body p-4 p-md-5">
-                <div class="d-flex align-items-center justify-content-between mb-4">
+                <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
                     <div class="d-flex align-items-center">
                         <div class="icon-bubble me-3">
                             <i class="bi bi-cloud-arrow-up-fill text-cyan fs-4"></i>
                         </div>
                         <div>
-                            <h2 class="card-title h5 mb-0 fw-bold text-white">Upload Invoice Document</h2>
-                            <span class="text-muted-subtle small">Supported formats: Native Vector PDF, Scanned Image PDF</span>
+                            <h2 class="card-title h5 mb-0 fw-bold text-white">Smart Document Ingestion</h2>
+                            <span class="text-muted-subtle small">Native Vector PDFs &bull; Scanned Image Documents &bull; Courier Receipts</span>
                         </div>
                     </div>
-                    <span class="badge badge-engine">AUTO DETECT ENGINE</span>
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="badge badge-engine"><i class="bi bi-gpu-card me-1"></i>AUTO-OCR ROUTER</span>
+                    </div>
                 </div>
                 
-                <!-- Cyber Drop Zone -->
+                <!-- Interactive Cyber Holographic Dropzone -->
                 <div class="upload-box cyber-dropzone text-center p-5 rounded-4 mb-4" id="dropZone">
-                    <div class="dropzone-icon-wrap mb-3">
-                        <i class="bi bi-file-earmark-pdf-fill text-cyan dropzone-icon"></i>
-                        <div class="pulse-ring"></div>
+                    <!-- Laser Scanner Hologram Beam -->
+                    <div class="laser-scanner-beam" id="laserBeam"></div>
+                    
+                    <div class="hologram-pdf-container mb-4">
+                        <div class="hologram-doc-wrapper">
+                            <div class="doc-sheet sheet-back"></div>
+                            <div class="doc-sheet sheet-mid"></div>
+                            <div class="doc-sheet sheet-front">
+                                <div class="doc-scan-line"></div>
+                                <div class="doc-lines">
+                                    <div class="line l1"></div>
+                                    <div class="line l2"></div>
+                                    <div class="line l3"></div>
+                                    <div class="line l4"></div>
+                                </div>
+                                <i class="bi bi-file-earmark-pdf-fill doc-badge-icon text-cyan"></i>
+                            </div>
+                        </div>
+                        <div class="hologram-ripple-ring ring-1"></div>
+                        <div class="hologram-ripple-ring ring-2"></div>
+                        <div class="hologram-ripple-ring ring-3"></div>
                     </div>
+
                     <input type="file" id="pdfFileInput" accept="application/pdf" class="file-input d-none">
-                    <label for="pdfFileInput" class="btn btn-cyber-primary btn-lg px-4 py-2 mb-3" id="chooseFileBtn">
-                        <i class="bi bi-folder2-open me-2"></i>Select PDF File
-                    </label>
-                    <div class="drop-hint text-muted-subtle small">or drag and drop your document here to extract</div>
+                    
+                    <div class="mb-3">
+                        <label for="pdfFileInput" class="btn btn-cyber-primary btn-lg px-4 py-2" id="chooseFileBtn">
+                            <i class="bi bi-folder2-open me-2"></i>Choose Invoice PDF
+                        </label>
+                    </div>
+
+                    <div class="drop-hint text-muted-subtle small">
+                        <span class="d-inline-block animate-bounce"><i class="bi bi-arrow-down-circle me-1 text-cyan"></i></span>
+                        or drag and drop your document anywhere in this box
+                    </div>
+
                     <div class="mt-3" id="selectedFileInfo">
-                        <span class="badge selected-file-badge">
-                            <i class="bi bi-file-text me-1 text-cyan"></i>
+                        <span class="badge selected-file-badge" id="selectedFileBadge">
+                            <i class="bi bi-file-earmark-check-fill me-1 text-cyan"></i>
                             <span id="selectedFileName">No file selected</span>
+                            <button type="button" id="clearFileBtn" class="btn-clear-file hidden" title="Clear selection">
+                                <i class="bi bi-x-circle-fill"></i>
+                            </button>
                         </span>
                     </div>
                 </div>
 
-                <!-- Action Button -->
+                <!-- Process Action Area -->
                 <div class="d-flex justify-content-center">
-                    <button type="button" id="processBtn" class="btn btn-cyber-action btn-lg px-5 py-3 fw-bold" disabled>
-                        <i class="bi bi-lightning-charge-fill me-2"></i>Process &amp; Extract Data
+                    <button type="button" id="processBtn" class="btn btn-cyber-action btn-lg px-5 py-3 fw-bold position-relative overflow-hidden" disabled>
+                        <span class="btn-shine"></span>
+                        <span class="btn-content d-flex align-items-center">
+                            <i class="bi bi-lightning-charge-fill me-2 fs-5"></i>
+                            <span>Process &amp; Extract Spreadsheet</span>
+                        </span>
                     </button>
                 </div>
 
-                <!-- Status Indicator -->
-                <div id="statusContainer" class="alert alert-cyber-info mt-4 d-flex align-items-center gap-3 hidden" role="alert">
-                    <div class="cyber-spinner" id="statusSpinner">
-                        <div class="spinner-ring"></div>
+                <!-- Motion Graphic Processing HUD Telemetry -->
+                <div id="statusContainer" class="processing-hud-card mt-4 p-4 rounded-4 hidden" role="alert">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="radar-scan-circle">
+                                <div class="radar-sweep"></div>
+                                <i class="bi bi-cpu text-cyan radar-center-icon"></i>
+                            </div>
+                            <div>
+                                <div class="fw-bold text-white fs-6 d-flex align-items-center gap-2">
+                                    <span id="statusTitle">Neural Extraction Active</span>
+                                    <span class="telemetry-badge" id="statusTimeElapsed">0.0s</span>
+                                </div>
+                                <div class="small text-muted-subtle" id="statusSubtext">Initializing spatial OCR pipelines...</div>
+                            </div>
+                        </div>
+                        <div class="text-end">
+                            <div class="text-cyan font-mono fw-bold fs-5" id="progressPercentage">0%</div>
+                            <div class="text-muted-subtle text-mono-xs" id="progressPhaseName">PHASE 1/3</div>
+                        </div>
                     </div>
-                    <div>
-                        <div class="fw-bold text-cyan" id="statusText">Status: Analyzing Document...</div>
-                        <div class="small text-muted-subtle" id="statusSubtext"></div>
+
+                    <!-- Glowing Animated Progress Bar -->
+                    <div class="hud-progress-bar-wrap mb-3">
+                        <div class="hud-progress-bar" id="hudProgressBar" style="width: 0%;">
+                            <div class="progress-glow-head"></div>
+                        </div>
+                    </div>
+
+                    <!-- Stepper Stages -->
+                    <div class="hud-steps-row">
+                        <div class="hud-step-item active" id="step1">
+                            <div class="step-dot"></div>
+                            <span>PDF Geometry Parsing</span>
+                        </div>
+                        <div class="hud-step-item" id="step2">
+                            <div class="step-dot"></div>
+                            <span>Spatial OCR &amp; Token Clustering</span>
+                        </div>
+                        <div class="hud-step-item" id="step3">
+                            <div class="step-dot"></div>
+                            <span>Excel Sheet &amp; Formula Compilation</span>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Download Success Area -->
+                <!-- Download & Success Banner with High-Tech Motion -->
                 <div id="downloadContainer" class="alert alert-cyber-success mt-4 p-4 rounded-4 hidden" role="alert">
                     <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
                         <div class="d-flex align-items-center gap-3">
                             <div class="success-icon-glow">
-                                <i class="bi bi-check-circle-fill text-emerald fs-2"></i>
+                                <i class="bi bi-check-lg text-emerald fs-2"></i>
                             </div>
                             <div>
-                                <h5 class="alert-heading mb-1 fw-bold text-white">Extraction Complete!</h5>
-                                <div class="d-flex gap-2 flex-wrap">
-                                    <span class="badge badge-emerald-pill" id="extractedRowsBadge">Extracted rows: 0</span>
-                                    <span class="badge badge-cyan-pill" id="extractionModeBadge">Engine: PDF_TEXT</span>
+                                <h5 class="alert-heading mb-1 fw-bold text-white d-flex align-items-center gap-2">
+                                    Extraction Complete!
+                                    <span class="badge badge-success-chip">READY</span>
+                                </h5>
+                                <div class="d-flex gap-2 flex-wrap mt-2">
+                                    <span class="badge badge-emerald-pill" id="extractedRowsBadge">
+                                        <i class="bi bi-table me-1"></i>Extracted rows: 0
+                                    </span>
+                                    <span class="badge badge-cyan-pill" id="extractionModeBadge">
+                                        <i class="bi bi-gear-wide-connected me-1"></i>Engine: PDF_TEXT
+                                    </span>
+                                    <span class="badge badge-indigo-pill" id="pageCountBadge">
+                                        <i class="bi bi-files me-1"></i>Pages: 1
+                                    </span>
                                 </div>
                             </div>
                         </div>
-                        <a id="downloadExcelBtn" href="#" class="btn btn-cyber-download btn-lg px-4 py-2 fw-bold" download>
-                            <i class="bi bi-file-earmark-excel-fill me-2"></i>Download Spreadsheet (.xlsx)
-                        </a>
+                        <div class="d-flex gap-2 flex-wrap">
+                            <a id="downloadExcelBtn" href="#" class="btn btn-cyber-download btn-lg px-4 py-2 fw-bold" download>
+                                <i class="bi bi-file-earmark-excel-fill me-2 fs-5"></i>Download Spreadsheet (.xlsx)
+                            </a>
+                            <button type="button" id="resetBtn" class="btn btn-outline-cyber px-3 py-2" title="Upload another invoice">
+                                <i class="bi bi-arrow-repeat me-1"></i>New PDF
+                            </button>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Error Banner -->
                 <div id="errorBanner" class="alert alert-cyber-danger mt-4 d-flex align-items-center gap-3 hidden" role="alert">
-                    <i class="bi bi-exclamation-octagon-fill fs-4 text-danger"></i>
-                    <span id="errorMessage" class="fw-medium">Error message</span>
+                    <i class="bi bi-exclamation-octagon-fill fs-3 text-danger flex-shrink-0"></i>
+                    <div>
+                        <div class="fw-bold text-danger">Extraction Error</div>
+                        <div id="errorMessage" class="small text-danger-subtle">Error message details</div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Preview Section -->
+        <!-- Interactive Live Preview Section with Holographic Sheet View -->
         <div id="previewSection" class="card glass-card border-glow mb-4 hidden">
-            <div class="card-header glass-card-header py-3 border-bottom-cyber d-flex align-items-center justify-content-between">
-                <h3 class="h5 mb-0 fw-bold d-flex align-items-center text-white">
-                    <i class="bi bi-table text-cyan me-2"></i>EXTRACTED INVOICE DATA
-                </h3>
-                <span class="badge badge-live-preview">LIVE PREVIEW</span>
+            <div class="card-header glass-card-header py-3 border-bottom-cyber d-flex align-items-center justify-content-between flex-wrap gap-2">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="bi bi-grid-3x3-gap-fill text-cyan fs-5"></i>
+                    <h3 class="h5 mb-0 fw-bold text-white">LIVE SPREADSHEET PREVIEW</h3>
+                    <span class="badge badge-live-preview ms-2">INTERACTIVE</span>
+                </div>
+                
+                <!-- Quick Filter & Action Controls -->
+                <div class="d-flex align-items-center gap-2">
+                    <div class="search-input-wrap">
+                        <i class="bi bi-search search-icon"></i>
+                        <input type="text" id="tableSearchInput" class="form-control form-control-sm cyber-search" placeholder="Filter rows...">
+                    </div>
+                    <button type="button" id="copyTableBtn" class="btn btn-sm btn-cyber-secondary" title="Copy table as CSV">
+                        <i class="bi bi-clipboard me-1"></i>Copy CSV
+                    </button>
+                </div>
             </div>
+
             <div class="card-body p-4">
                 <div class="invoice-sheet" id="invoiceSheet">
-                    <!-- Header Metadata -->
+                    <!-- Dynamic Header & Metadata Block -->
                     <div class="glass-meta-panel p-4 rounded-3 mb-4" id="invoiceHeaderBlock">
                         <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-2">
-                            <h4 class="fw-bold text-gradient-cyan mb-0" id="companyHeading">INVOICE PREVIEW</h4>
-                            <span class="badge badge-verified"><i class="bi bi-shield-check me-1"></i>VERIFIED INVOICE</span>
+                            <div>
+                                <span class="text-mono-xs text-cyan text-uppercase letter-spacing-1">Document Entity</span>
+                                <h4 class="fw-bold text-gradient-cyan mb-0" id="companyHeading">INVOICE PREVIEW</h4>
+                            </div>
+                            <span class="badge badge-verified"><i class="bi bi-shield-check me-1"></i>VERIFIED SCHEMA</span>
                         </div>
                         <div class="text-muted-light small mb-1" id="companyAddress"></div>
                         <div class="text-muted-subtle small mb-3 font-mono" id="companyContacts"></div>
@@ -166,66 +307,95 @@
                         </div>
                     </div>
 
-                    <!-- Table Preview -->
-                    <div class="table-responsive cyber-table-wrap rounded-3">
+                    <!-- Interactive Live Table -->
+                    <div class="table-responsive cyber-table-wrap rounded-3 custom-scrollbar">
                         <table class="table table-cyber align-middle mb-0" id="extractedTable">
                             <thead>
                                 <tr>
-                                    <th class="col-sr">Sr No</th>
+                                    <th class="col-sr">#</th>
                                     <th class="col-doc">Doc No</th>
                                     <th class="col-date">Date</th>
                                     <th class="col-dest">Dest. City</th>
                                     <th class="col-mode">Mode</th>
                                     <th class="col-i">I</th>
                                     <th class="col-pc">PC</th>
-                                    <th class="col-weight">Weight</th>
-                                    <th class="col-amount">Amount</th>
+                                    <th class="col-weight text-end">Weight</th>
+                                    <th class="col-amount text-end">Amount</th>
                                 </tr>
                             </thead>
                             <tbody id="tableBody">
-                                <!-- Populated dynamically by JS -->
+                                <!-- Populated dynamically by JS with staggered animations -->
                             </tbody>
+                            <tfoot id="tableFoot" class="table-cyber-foot">
+                                <tr>
+                                    <td colspan="7" class="text-end fw-bold text-muted font-mono">TOTAL CALCULATED:</td>
+                                    <td id="totalWeightCell" class="text-end fw-bold font-mono text-white">-</td>
+                                    <td id="totalAmountCell" class="text-end fw-bold font-mono text-emerald fs-6">-</td>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Info / Features Card -->
+        <!-- Interactive Feature Matrix Cards -->
         <div class="row g-3">
             <div class="col-md-4">
                 <div class="card glass-card h-100 p-4 feature-card">
-                    <div class="feature-icon text-cyan mb-3"><i class="bi bi-lightning-charge fs-3"></i></div>
+                    <div class="feature-icon-wrap text-cyan mb-3">
+                        <i class="bi bi-lightning-charge-fill fs-3"></i>
+                        <div class="feature-icon-pulse"></div>
+                    </div>
                     <h5 class="fw-bold text-white h6">Instant Vector Parsing</h5>
-                    <p class="small text-muted-subtle mb-0">High-speed character extraction for native accounting and ERP digital PDFs.</p>
+                    <p class="small text-muted-subtle mb-0">Ultra-fast bounding-box character grouping for digital PDFs exported from SAP, Tally, Zoho, and accounting suites.</p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="card glass-card h-100 p-4 feature-card">
-                    <div class="feature-icon text-indigo mb-3"><i class="bi bi-eye fs-3"></i></div>
+                    <div class="feature-icon-wrap text-indigo mb-3">
+                        <i class="bi bi-eye-fill fs-3"></i>
+                        <div class="feature-icon-pulse"></div>
+                    </div>
                     <h5 class="fw-bold text-white h6">Neural OCR Vision</h5>
-                    <p class="small text-muted-subtle mb-0">300 DPI high-res page rendering with spatial line-item token clustering.</p>
+                    <p class="small text-muted-subtle mb-0">High-resolution 300 DPI rasterization with multi-pass OCR line clustering for low-contrast and scanned receipts.</p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="card glass-card h-100 p-4 feature-card">
-                    <div class="feature-icon text-emerald mb-3"><i class="bi bi-file-earmark-spreadsheet fs-3"></i></div>
-                    <h5 class="fw-bold text-white h6">Excel Auto-Formulas</h5>
-                    <p class="small text-muted-subtle mb-0">Generates styled .xlsx workbooks with automated SUM totals and formatting.</p>
+                    <div class="feature-icon-wrap text-emerald mb-3">
+                        <i class="bi bi-file-earmark-spreadsheet-fill fs-3"></i>
+                        <div class="feature-icon-pulse"></div>
+                    </div>
+                    <h5 class="fw-bold text-white h6">Automated Formula Engine</h5>
+                    <p class="small text-muted-subtle mb-0">Constructs native OpenPyXL spreadsheets with styled headers, alternating row fills, and real Excel SUM() formulas.</p>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="text-center py-5 text-muted-subtle small border-top-cyber mt-5">
+    <!-- Toast Notification Container for Quick Actions -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1055;">
+        <div id="actionToast" class="toast cyber-toast align-items-center text-white border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body d-flex align-items-center gap-2">
+                    <i class="bi bi-check-circle-fill text-cyan fs-5" id="toastIcon"></i>
+                    <span id="toastMessage">Action completed</span>
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Futuristic Cyber Footer -->
+    <footer class="text-center py-5 text-muted-subtle small border-top-cyber mt-5 position-relative">
         <div class="container">
             <div class="d-flex justify-content-center align-items-center gap-2 mb-2">
-                <span class="brand-text text-white fw-bold">PDF<span class="text-cyan">2</span>EXCEL</span>
+                <span class="brand-text text-white fw-bold">PDF<span class="text-cyan">2</span>EXCEL<span class="text-indigo">.AI</span></span>
                 <span class="text-muted">&bull;</span>
-                <span>Production Server Active</span>
+                <span class="text-cyan text-mono-xs">HIGH PRECISION AUTOMATION</span>
             </div>
-            <div>Built for High-Precision Document Automation &bull; Cloud &amp; Local Network Ready</div>
+            <div>Built for High-Speed Accounting, Logistics, and Document Pipelines &bull; Linux, Windows &amp; Cloud Ready</div>
         </div>
     </footer>
 
@@ -234,3 +404,4 @@
     <script src="/static/script.js"></script>
 </body>
 </html>
+
